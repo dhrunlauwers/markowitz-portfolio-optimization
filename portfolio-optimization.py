@@ -2,6 +2,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 
 # define some functions
 def calc_portfolio(mu, expected_return, cov_matrix):
@@ -57,11 +58,12 @@ def calc_lambda2(x1, x2, x3, mu):
 def calc_weights(cov_matrix, lambda1, lambda2, expected_return, ones):
     return cov_matrix.I * (lambda1[0,0] * expected_return + lambda2[0,0] * ones)
 
-def plot_asset_allocation(results):
+def plot_asset_allocation(results, save_dir):
     """
     Plots the asset allocation for all portfolios generated
     along with a dotted line to indicate minimum variance
-    portfolio
+    portfolio. Plot is saved in relative directory provided as 
+    'save_dir'.
     """
 
     # Find portfolio with lowest risk, and generate x and y values to plot the red line
@@ -80,14 +82,18 @@ def plot_asset_allocation(results):
     ax.plot(y,x,'--')
     weight_col.append('min var portfolio')
     ax.legend(weight_col)
-    fig.savefig('./visuals/PortfolioAllocation.png')
+
+    #save plot to file
+    if not os.path.exists(save_dir): os.makedirs(save_dir)
+    fig.savefig(save_dir + 'PortfolioAllocation.png')
 
     return None
 
-def plot_risk(results):
+def plot_risk(results, save_dir):
     """
     Plots the standard deviation of each portfolio
-    to show which one has the lowest risk
+    to show which one has the lowest risk. Plot is saved 
+    in relative directory provided as 'save_dir'.
     """
 
     fig, ax = plt.subplots(figsize=(15,9))
@@ -95,7 +101,10 @@ def plot_risk(results):
     ax.set_ylabel('standard deviation', fontsize=16)
     ax.set_xlabel('expected return', fontsize=16)
     ax.plot(results['mu'], results['std_dev'])
-    fig.savefig('./visuals/PortfolioStandardDeviation.png')
+
+    #save plot to file
+    if not os.path.exists(save_dir): os.makedirs(save_dir)
+    fig.savefig(save_dir + 'PortfolioStandardDeviation.png')
 
     return None
 
@@ -118,8 +127,10 @@ if __name__ == '__main__':
         
     print(results)
 
-    plot_asset_allocation(results)
-    plot_risk(results)
+    save_dir = './visuals/'
+
+    plot_asset_allocation(results, save_dir)
+    plot_risk(results, save_dir)
 
 
 
