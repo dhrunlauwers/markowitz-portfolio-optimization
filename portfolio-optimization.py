@@ -18,7 +18,7 @@ def calc_portfolio(mu, expected_return, cov_matrix):
     """
 
     # calculate asset allocation
-    ones = np.matrix([[1] for item in r])
+    ones = np.matrix([[1] for item in expected_return])
     x1 = calc_x1(expected_return, cov_matrix, ones)
     x2 = calc_x2(expected_return, cov_matrix)
     x3 = calc_x3(expected_return, cov_matrix, ones)
