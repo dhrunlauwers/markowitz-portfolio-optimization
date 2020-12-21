@@ -35,7 +35,7 @@ def calc_portfolio(mu, expected_return, cov_matrix):
         portfolio_details["w%s" % i] = val[0,0]
 
     # calculate portfolio variance and standard deviation
-    portfolio_details['tot_var'] = (weights.T * C * weights)[0,0]
+    portfolio_details['tot_var'] = (weights.T * cov_matrix * weights)[0,0]
     portfolio_details['std_dev'] = np.sqrt(portfolio_details['tot_var'])
 
     return portfolio_details
@@ -68,7 +68,7 @@ def plot_asset_allocation(results, save_dir):
 
     # Find portfolio with lowest risk, and generate x and y values to plot the red line
     lowest_risk_portfolio = results.iloc[np.argmin(results['std_dev'])]
-    y = [lowest_risk_portfolio['mu'] for _ in range(len(returns_vector))]
+    y = [lowest_risk_portfolio['mu'] for _ in range(len(results))]
     x = np.arange(-0.2, 1.4, 0.2)
 
     fig, ax = plt.subplots(figsize=(15,9))
